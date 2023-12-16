@@ -47,40 +47,35 @@ fn main() {
         fs::File::open(path).expect("Could not open file!"))
         .lines();
 
-    let times: Vec<usize> = data
+    let time: usize = data
         .next()
         .expect("Unexpected EOF when reading times.")
         .expect("Could not read line for times.")
         .split_whitespace()
         .skip(1)
-        .map(|n| n.parse::<usize>().expect("Invalid time!"))
-        .collect();
+        .collect::<Vec<&str>>()
+        .join("")
+        .parse::<usize>()
+        .expect("Invalid time!");
 
-    let records: Vec<usize> = data
+    let record: usize = data
         .next()
         .expect("Unexpected EOF when reading records.")
         .expect("Could not read line for records.")
         .split_whitespace()
         .skip(1)
-        .map(|n| n.parse::<usize>().expect("Invalid record!"))
-        .collect();
+        .collect::<Vec<&str>>()
+        .join("")
+        .parse::<usize>()
+        .expect("Invalid time!");
 
-    let races: Vec<BoatRace> = times
-        .iter()
-        .zip(records.iter())
-        .map(|(time, record)| BoatRace {
-            time: *time,
-            record: *record
-        })
-        .collect();
+    let race = BoatRace {
+        time: time, record: record
+    };
 
     println!(
-        "Productory of solutions: {}",
-        races
-            .into_iter()
-            .map(|r| r.solution_count())
-            .reduce(|a, b| a * b)
-            .expect("Could not calculate productory!")
+        "Number of solutions: {}",
+        race.solution_count()
     )
 
 }
